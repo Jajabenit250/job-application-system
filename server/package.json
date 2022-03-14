@@ -1,0 +1,16 @@
+{
+  "name": "job-app-server",
+  "version": "1.0.0",
+  "description": "Job Application Server",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node server",
+    "build": "npm install"
+  },
+  "author": "benit.havugimana",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3",
+    "nodemon": "^2.0.15"
+  }
+}

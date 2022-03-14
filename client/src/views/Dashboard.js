@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { applicantList } from "../redux/actions";
+import { uploadCvAction } from "../redux/actions";
 import Footer from "../controllers/Footer";
 
 
@@ -22,7 +22,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    applicantList: (data) => dispatch(applicantList(data)),
+    uploadCvAction: (data) => dispatch(uploadCvAction(data)),
   };
 };
 
