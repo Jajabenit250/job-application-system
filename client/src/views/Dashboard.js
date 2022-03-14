@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { uploadCvAction } from "../redux/actions";
 import Footer from "../controllers/Footer";
+import ApplicantTable from "../controllers/ApplicantTable";
 
 
 
@@ -10,8 +11,9 @@ function Dashboard(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [0]);
   return (
-    <div>
+    <div style={{ marginLeft: "50px", marginRight: "50px"}}>
       <Footer />
+      <ApplicantTable />
     </div>
   );
 }

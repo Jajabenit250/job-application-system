@@ -2,13 +2,13 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
 
-const applicantSchema = new mongoose.Schema({
+const jobSchema = new mongoose.Schema({
     jobID: {
         type: mongoose.Schema.Types.ObjectId,
         required: false,
         ref: 'jobs'
     },
-    fileURL: {
+    jobName: {
         type: String,
         trim: true,
         required: true,
@@ -18,7 +18,7 @@ const applicantSchema = new mongoose.Schema({
             }
         }
     },
-    applicantName: {
+    description: {
         type: String,
         trim: true,
         required: false,
@@ -29,32 +29,10 @@ const applicantSchema = new mongoose.Schema({
         }
     },
 
-    status: {
-        type: String,
-        trim: true,
-        required: false,
-        validate(value) {
-            if (!value.length > 2) {
-                throw new Error('Status is required')
-            }
-        }
-    },
-
-    coverLetter: {
-        type: String,
-        trim: true,
-        required: false,
-        validate(value) {
-            if (!value.length > 2) {
-                throw new Error('Cover Letter is required')
-            }
-        }
-    },
-
 },
     {
         timestamps: true
     }
 );
-const applicant = mongoose.model("applicants", applicantSchema);
-export default applicant;
+const job = mongoose.model("jobs", jobSchema);
+export default job;
