@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { uploadCvAction } from "../redux/actions";
-import Footer from "../controllers/Footer";
+import Vacancies from "../controllers/Vacancies";
 import ApplicantTable from "../controllers/ApplicantTable";
 
 
@@ -12,7 +12,7 @@ function Dashboard(props) {
   }, [0]);
   return (
     <div style={{ marginLeft: "50px", marginRight: "50px"}}>
-      <Footer />
+      <Vacancies />
       <ApplicantTable />
     </div>
   );
