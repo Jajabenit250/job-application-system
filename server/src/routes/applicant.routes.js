@@ -8,5 +8,6 @@ const router = Router();
 router.post('/upload/resume/:id', Uploader.single("file"), ApplicantController.uploadResume);
 router.get('/applicants', ApplicantController.allApplicant);
 router.get('/applicants/:id', ApplicantController.applicantById);
+router.put('/applicants/:id', ApplicantController.updateStatus);
 
 export default router;

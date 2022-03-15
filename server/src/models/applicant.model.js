@@ -51,6 +51,17 @@ const applicantSchema = new mongoose.Schema({
         }
     },
 
+    status: {
+        type: String,
+        trim: true,
+        required: false,
+        validate(value) {
+            if (!value.length > 2) {
+                throw new Error('status is required')
+            }
+        }
+    },
+
 },
     {
         timestamps: true
