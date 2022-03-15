@@ -18,7 +18,7 @@ export const upload = multer({
 		ACL: 'public-read',
 		contentType: multerS3.AUTO_CONTENT_TYPE,
 		key(req, file, cb) {
-			cb(null, `${req.user._id}/${req.params.projectId}/` + file.originalname);
+			cb(null, `/` + file.originalname);
 		},
 	}),
 });

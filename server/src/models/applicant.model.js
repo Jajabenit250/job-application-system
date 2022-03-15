@@ -11,7 +11,7 @@ const applicantSchema = new mongoose.Schema({
     fileURL: {
         type: String,
         trim: true,
-        required: true,
+        required: false,
         validate(value) {
             if (!value.length > 2) {
                 throw new Error('FileUrl is required')
