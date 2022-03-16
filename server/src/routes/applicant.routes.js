@@ -5,9 +5,9 @@ import ApplicantController from "../controllers/applicant.controller";
 
 const router = Router();
 
-router.post('/upload/resume/:id', Uploader.single("file"), ApplicantController.uploadResume);
+router.post('/apply', Uploader.single("file"), ApplicantController.uploadResume);
 router.get('/applicants', ApplicantController.allApplicant);
-router.get('/applicants/:id', ApplicantController.applicantById);
+router.get('/all/:id', ApplicantController.applicantById);
 router.put('/applicants/:id', ApplicantController.updateStatus);
 
 export default router;

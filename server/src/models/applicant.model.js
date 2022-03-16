@@ -29,6 +29,28 @@ const applicantSchema = new mongoose.Schema({
         }
     },
 
+    age: {
+        type: String,
+        trim: true,
+        required: false,
+        validate(value) {
+            if (!value.length > 2) {
+                throw new Error('Age is required')
+            }
+        }
+    },
+
+    degree: {
+        type: String,
+        trim: true,
+        required: false,
+        validate(value) {
+            if (!value.length > 2) {
+                throw new Error('Applicant name is required')
+            }
+        }
+    },
+
     status: {
         type: String,
         trim: true,

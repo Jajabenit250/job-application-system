@@ -4,12 +4,12 @@ export const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case "APPY_SUCCESS":
+    case "VACANCIES":
       return {
         ...state,
         data: action.payload,
       };
-    case "APPLY_ERROR":
+    case "VAC_ERROR":
       return {
         ...state,
         data: action.payload,

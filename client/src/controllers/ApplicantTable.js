@@ -1,9 +1,10 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import { connect } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -52,7 +53,7 @@ const rows = [
   { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
 ];
 
-export default function DataTable() {
+function DataTable() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -86,3 +87,16 @@ export default function DataTable() {
     </>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    allVacancy: state.vacancy.data,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // uploadCvAction: (data) => dispatch(uploadCvAction(data)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataTable);

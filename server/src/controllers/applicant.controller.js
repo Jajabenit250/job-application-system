@@ -3,13 +3,15 @@ import ApplicantModel from "../models/applicant.model";
 class ApplicantController {
   static async createApplication(req, res) {
     try {
-      const { applicantName, status, coverLetter } = req.body;
+      const { applicantName, status, coverLetter, age, degree } = req.body;
       const jobID = req.params.id;
       const result = await ApplicantModel({
         applicantName,
         status,
         coverLetter,
-        jobID
+        jobID,
+        age, 
+        degree
       }).save();
       if (result) {
         return res.status(200).send({ result });
@@ -21,11 +23,17 @@ class ApplicantController {
   }
   static async uploadResume(req, res) {
     try {
+      const { applicantName, coverLetter, age, degree, jobID } = req.body;
       const fileURL = req.file.location;
-      const applicationId = req.params.id;
-      const datas = await ApplicantModel.find({ _id: applicationId });
-      if (datas) {
-        const result = await ApplicantModel({ fileURL }).save();
+      const result = await ApplicantModel({
+        applicantName,
+        coverLetter,
+        jobID,
+        age, 
+        degree,
+        fileURL
+      }).save();
+      if (result) {
         return res.status(200).send({ result });
       }
 
@@ -51,7 +59,7 @@ class ApplicantController {
   static async applicantById(req, res) {
     try {
       const applicationId = req.params.id;
-      const datas = await ApplicantModel.find({ _id: applicationId });
+      const datas = await ApplicantModel.find({ jobID: applicationId }).sort( { applicantName: 1 } ).limit( 10 );
       if (datas) {
         return res.status(200).send({ datas });
       }

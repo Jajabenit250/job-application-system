@@ -1,5 +1,4 @@
-import React, { Component, useEffect } from "react";
-import Paper from "@mui/material/Paper";
+import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -8,6 +7,9 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { connect } from "react-redux";
+import { getVacancies, uploadCvAction } from "../redux/actions";
+import TextField from "@mui/material/TextField";
 
 const style = {
   position: "absolute",
@@ -21,11 +23,34 @@ const style = {
   p: 4,
 };
 
-export default function Vacancies() {
+function Vacancies(props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  useEffect(() => {}, []);
+  const [file, setFile] = React.useState();
+  const [applicantName, setApplicantName] = React.useState();
+  const [coverLetter, setCoverLetter] = React.useState();
+  const [age, setAge] = React.useState();
+  const [degree, setDegree] = React.useState();
+  const [jobID, setJobID] = React.useState();
+
+  function handleChangeFile(event) {
+    setFile(event.target.files[0]);
+  }
+
+  function applyToJob (){
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('jobID', jobID);
+    formData.append('applicantName', applicantName);
+    formData.append('coverLetter', coverLetter);
+    formData.append('age', age);
+    formData.append('degree', degree);
+    props.uploadCvAction(formData);
+  }
+  useEffect(() => {
+    props.getVacancies();
+  }, []);
   return (
     <div>
       <Modal
@@ -35,12 +60,64 @@ export default function Vacancies() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          <center>
+            <Typography id="modal-modal-title" variant="h5" component="h2">
+              Add Your Information to apply
+            </Typography>
+          </center>
+          <TextField
+            fullWidth
+            label="Candidate FullName"
+            id="fullWidth"
+            onChange={(e) => setApplicantName(e.target.value)}
+            style={{ margin: "5px" }}
+          />
+          <TextField
+            fullWidth
+            label="Candidate Age"
+            id="fullWidth"
+            type="number"
+            onChange={(e) => setAge(e.target.value)}
+            style={{ margin: "5px" }}
+          />
+          <TextField
+            fullWidth
+            label="Degree"
+            id="fullWidth"
+            onChange={(e) => setDegree(e.target.value)}
+            style={{ margin: "5px" }}
+          />
+
+          <TextField
+            fullWidth
+            label="Cover Letter"
+            id="fullWidth"
+            onChange={(e) => setCoverLetter(e.target.value)}
+            style={{ margin: "5px" }}
+            multiline
+            rows={4}
+            maxRows={7}
+          />
+          <center>
+          <TextField
+            // label="Add Resume"
+            type="file"
+            onChange={handleChangeFile} 
+            style={{ margin: "5px" }}
+          />
+            <Button
+              variant="contained"
+              color="primary"
+              style={{
+                marginTop: "10px",
+                width: "40%",
+                textTransform: "none",
+              }}
+              onClick={applyToJob}
+            >
+              Submit
+            </Button>{" "}
+          </center>
         </Box>
       </Modal>
       <br />
@@ -64,122 +141,46 @@ export default function Vacancies() {
             </Typography>
 
             <Grid container spacing={4}>
-              <Grid item xs={12} sm={6} md={3}>
-                <Card sx={{ minWidth: 350 }} style={{ marginRight: "20px" }}>
-                  <CardContent>
-                    <Typography
-                      sx={{ fontSize: 25 }}
-                      color="black"
-                      gutterBottom
-                    >
-                      Job Title
-                    </Typography>
-                    <Typography variant="h5" component="div"></Typography>
-                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                      The purpose of the job is to implement the Bank’s
-                      reporting policies and procedures in the preparation of
-                      accounting records and reports so as to ensure the
-                      provision
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      onClick={handleOpen}
-                      style={{ marginLeft: "120px" }}
-                    >
-                      Apply Now
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <Card sx={{ minWidth: 350 }} style={{ marginRight: "20px" }}>
-                  <CardContent>
-                    <Typography
-                      sx={{ fontSize: 25 }}
-                      color="black"
-                      gutterBottom
-                    >
-                      Job Title
-                    </Typography>
-                    <Typography variant="h5" component="div"></Typography>
-                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                      The purpose of the job is to implement the Bank’s
-                      reporting policies and procedures in the preparation of
-                      accounting records and reports so as to ensure the
-                      provision
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      onClick={handleOpen}
-                      style={{ marginLeft: "120px" }}
-                    >
-                      Apply Now
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <Card sx={{ minWidth: 350 }} style={{ marginRight: "20px" }}>
-                  <CardContent>
-                    <Typography
-                      sx={{ fontSize: 25 }}
-                      color="black"
-                      gutterBottom
-                    >
-                      Job Title
-                    </Typography>
-                    <Typography variant="h5" component="div"></Typography>
-                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                      The purpose of the job is to implement the Bank’s
-                      reporting policies and procedures in the preparation of
-                      accounting records and reports so as to ensure the
-                      provision
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      onClick={handleOpen}
-                      style={{ marginLeft: "120px" }}
-                    >
-                      Apply Now
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-              <Grid item xs={12} sm={6} md={3}>
-                <Card sx={{ minWidth: 350 }} style={{ marginRight: "20px" }}>
-                  <CardContent>
-                    <Typography
-                      sx={{ fontSize: 25 }}
-                      color="black"
-                      gutterBottom
-                    >
-                      Job Title
-                    </Typography>
-                    <Typography variant="h5" component="div"></Typography>
-                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                      The purpose of the job is to implement the Bank’s
-                      reporting policies and procedures in the preparation of
-                      accounting records and reports so as to ensure the
-                      provision
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      onClick={handleOpen}
-                      style={{ marginLeft: "120px" }}
-                    >
-                      Apply Now
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
+              {props.allVacancy
+                ? props.allVacancy.datas.map(function (vacancy, i) {
+                    return (
+                      <Grid item xs={12} sm={6} md={3}>
+                        <Card
+                          sx={{ minWidth: 350 }}
+                          style={{ marginRight: "20px" }}
+                        >
+                          <CardContent>
+                            <Typography
+                              sx={{ fontSize: 25 }}
+                              color="black"
+                              gutterBottom
+                            >
+                              {vacancy.jobName}
+                            </Typography>
+                            <Typography
+                              variant="h5"
+                              component="div"
+                            ></Typography>
+                            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                              {vacancy.description}
+                            </Typography>
+                          </CardContent>
+                          <CardActions>
+                            <Button
+                              size="small"
+                              onClick={() => {handleOpen();
+                                setJobID(vacancy._id)
+                              }}
+                              style={{ marginLeft: "120px" }}
+                            >
+                              Apply Now
+                            </Button>
+                          </CardActions>
+                        </Card>
+                      </Grid>
+                    );
+                  })
+                : " "}
             </Grid>
           </Grid>
         </Grid>
@@ -187,3 +188,17 @@ export default function Vacancies() {
     </div>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    allVacancy: state.vacancy.data,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getVacancies: () => dispatch(getVacancies()),
+    uploadCvAction: (data) => dispatch(uploadCvAction(data))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Vacancies);
