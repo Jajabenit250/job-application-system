@@ -48,9 +48,7 @@ function Vacancies(props) {
     formData.append('degree', degree);
     props.uploadCvAction(formData);
   }
-  useEffect(() => {
-    props.getVacancies();
-  }, []);
+
   return (
     <div>
       <Modal

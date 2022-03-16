@@ -74,12 +74,12 @@ class ApplicantController {
 
   static async updateStatus(req, res) {
     try {
-      const _id = req.params.id;
+      const id = req.body.id;
       const status = req.body.status;
-      const ApplicantData = await ApplicantModel.find({ _id });
+      const ApplicantData = await ApplicantModel.find({ _id: id});
       if (ApplicantData) {
         const resl = await ApplicantModel.findOneAndUpdate(
-          { _id },
+          { _id: id },
           { $set: { status } },
           { useFindAndModify: false }
         );

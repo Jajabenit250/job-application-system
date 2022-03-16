@@ -6,11 +6,11 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { connect } from "react-redux";
-import { applicantsByJob } from "../redux/actions";
+import { applicantsByJob, hrDecision } from "../redux/actions";
 import Grid from "@mui/material/Grid";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import FormControl from '@mui/material/FormControl';
+import FormControl from "@mui/material/FormControl";
 
 const style = {
   position: "absolute",
@@ -26,8 +26,18 @@ const style = {
 
 function DataTable(props) {
   const [open, setOpen] = React.useState(false);
+  const [applicantData, setApplicantData] = React.useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [job, setJob] = React.useState("6231d9ad6087cc81bc6cc6d1");
+
+  const handleChange = (event) => {
+    setJob(event.target.value);
+    props.applicantsByJob(event.target.value);
+  };
+  useEffect(() => {
+    props.applicantsByJob();
+  }, [0]);
 
   const columns = [
     { field: "_id", headerName: "ID", minWidth: 70 },
@@ -61,18 +71,46 @@ function DataTable(props) {
       sortable: false,
       minWidth: 150,
       renderCell: (params) => {
-        return (
+        return params ? params.row.status ? (
+          <center>
+            {" "}
+            <h2 style={{ color: params.row.status === "pass" ? "blue" : "red" }}>
+              {" "}
+              {params.row.status}ed{" "}
+            </h2>{" "}
+          </center>
+        ) : (
           <Grid container>
             <Grid item xs={6}>
               {" "}
-              <Button>Pass</Button>{" "}
+              {params ? (
+                <Button
+                  onClick={() =>
+                    props.hrDecision({ id: params.row._id, status: "pass" })
+                  }
+                >
+                  Pass
+                </Button>
+              ) : (
+                ""
+              )}
             </Grid>
             <Grid item xs={6}>
               {" "}
-              <Button>Drop</Button>{" "}
+              {params ? (
+                <Button
+                  onClick={() =>
+                    props.hrDecision({ id: params.row._id, status: "drop" })
+                  }
+                >
+                  Drop
+                </Button>
+              ) : (
+                ""
+              )}
             </Grid>
           </Grid>
-        );
+        ): "";
       },
     },
 
@@ -95,34 +133,52 @@ function DataTable(props) {
             .forEach(
               (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
             );
-          return handleOpen(true);
+          return setApplicantData(thisRow);
         };
 
         return <Button onClick={onClick}>View Details</Button>;
       },
     },
   ];
-  useEffect(() => {
-    props.applicantsByJob();
-  }, []);
+  
   return (
     <>
       <Grid container>
         <Grid item xs={6}>
           {" "}
+          <center>
+            <Typography
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
+              style={{ marginTop: "20px" }}
+            >
+              {" "}
+              List Of Applicant Applying for :{" "}
+            </Typography>
+          </center>
         </Grid>
         <Grid item xs={6}>
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={10}
-              label="Age"
+              value={job}
+              label="Select a Job"
               style={{ marginTop: "20px" }}
+              onChange={handleChange}
             >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              {props.allVacancy
+                ? props.allVacancy.datas
+                  ? props.allVacancy.datas.map(function (vacancy, i) {
+                      return (
+                        <MenuItem value={vacancy ? vacancy._id : ""}>
+                          {vacancy.jobName}
+                        </MenuItem>
+                      );
+                    })
+                  : ""
+                : ""}
             </Select>
           </FormControl>
         </Grid>
@@ -136,18 +192,46 @@ function DataTable(props) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          <center>
+            <h2> Details </h2>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Applicant Name: {applicantData.applicantName}
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              {" "}
+              Age: {applicantData.age}{" "}
+            </Typography>
+
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              {" "}
+              Degree: {applicantData.degree}{" "}
+            </Typography>
+
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              {" "}
+              Status: {applicantData.status}{" "}
+            </Typography>
+
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              {" "}
+              Cover Letter
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              {" "}
+              {applicantData.coverLetter}
+            </Typography>
+
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              {" "}
+              Resume : <a href={applicantData.fileURL}> Click here to View </a>
+            </Typography>
+          </center>
         </Box>
       </Modal>
       <div style={{ height: 400, width: "100%" }}>
-        {props.allVacancy ? (
+        {props.allAllicant ? props.allAllicant.datas ? (
           <DataGrid
-            rows={props.allVacancy.datas}
+            rows={props.allAllicant.datas}
             columns={columns}
             pageSize={5}
             getRowId={() => Math.random()}
@@ -156,7 +240,7 @@ function DataTable(props) {
           />
         ) : (
           ""
-        )}
+        ) : " "}
       </div>{" "}
     </>
   );
@@ -164,12 +248,14 @@ function DataTable(props) {
 
 const mapStateToProps = (state) => {
   return {
-    allVacancy: state.applicantList.data,
+    allAllicant: state.applicantList.data,
+    allVacancy: state.vacancy.data,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     applicantsByJob: (data) => dispatch(applicantsByJob(data)),
+    hrDecision: (data) => dispatch(hrDecision(data)),
   };
 };
 
