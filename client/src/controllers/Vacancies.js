@@ -70,7 +70,7 @@ function Vacancies(props) {
             label="Candidate FullName"
             id="fullWidth"
             onChange={(e) => setApplicantName(e.target.value)}
-            style={{ margin: "5px" }}
+            style={{ margin: "5px", marginTop: "10px"}}
           />
           <TextField
             fullWidth
@@ -141,12 +141,12 @@ function Vacancies(props) {
             </Typography>
 
             <Grid container spacing={4}>
-              {props.allVacancy
+              {props.allVacancy ? props.allVacancy.datas
                 ? props.allVacancy.datas.map(function (vacancy, i) {
                     return (
                       <Grid item xs={12} sm={6} md={3}>
                         <Card
-                          sx={{ minWidth: 350 }}
+                          sx={{ minWidth: 320 }}
                           style={{ marginRight: "20px" }}
                         >
                           <CardContent>
@@ -180,7 +180,7 @@ function Vacancies(props) {
                       </Grid>
                     );
                   })
-                : " "}
+                : " " : " "}
             </Grid>
           </Grid>
         </Grid>

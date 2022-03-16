@@ -7,6 +7,10 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { connect } from "react-redux";
 import { applicantsByJob } from "../redux/actions";
+import Grid from "@mui/material/Grid";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import FormControl from '@mui/material/FormControl';
 
 const style = {
   position: "absolute",
@@ -19,10 +23,6 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-
-
-
-
 
 function DataTable(props) {
   const [open, setOpen] = React.useState(false);
@@ -46,7 +46,7 @@ function DataTable(props) {
       sortable: false,
       minWidth: 200,
     },
-  
+
     {
       field: "fileURL",
       headerName: "Resume",
@@ -60,8 +60,22 @@ function DataTable(props) {
       description: "This column has a value getter and is not sortable.",
       sortable: false,
       minWidth: 150,
+      renderCell: (params) => {
+        return (
+          <Grid container>
+            <Grid item xs={6}>
+              {" "}
+              <Button>Pass</Button>{" "}
+            </Grid>
+            <Grid item xs={6}>
+              {" "}
+              <Button>Drop</Button>{" "}
+            </Grid>
+          </Grid>
+        );
+      },
     },
-  
+
     {
       field: "_first_login",
       headerName: "Action",
@@ -71,11 +85,10 @@ function DataTable(props) {
       renderCell: (params) => {
         const onClick = (e) => {
           handleOpen(true);
-          e.stopPropagation(); // don't select this row after clicking
-  
+          e.stopPropagation();
           const api = params.api;
           const thisRow = {};
-  
+
           api
             .getAllColumns()
             .filter((c) => c.field !== "__check__" && !!c)
@@ -84,7 +97,7 @@ function DataTable(props) {
             );
           return handleOpen(true);
         };
-  
+
         return <Button onClick={onClick}>View Details</Button>;
       },
     },
@@ -94,8 +107,28 @@ function DataTable(props) {
   }, []);
   return (
     <>
-      {/* <Button onClick={handleOpen}>Open modal</Button> */}
-      <br /> 
+      <Grid container>
+        <Grid item xs={6}>
+          {" "}
+        </Grid>
+        <Grid item xs={6}>
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={10}
+              label="Age"
+              style={{ marginTop: "20px" }}
+            >
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+      </Grid>
+      <Typography> </Typography>
+      <br />
       <Modal
         open={open}
         onClose={handleClose}
@@ -112,15 +145,18 @@ function DataTable(props) {
         </Box>
       </Modal>
       <div style={{ height: 400, width: "100%" }}>
-      {props.allVacancy ? <DataGrid
-          rows={props.allVacancy.datas }
-          columns={columns}
-          pageSize={5}
-          getRowId={() => Math.random()}
-          rowsPerPageOptions={[5]}
-          checkboxSelection
-        /> : "" }
-        
+        {props.allVacancy ? (
+          <DataGrid
+            rows={props.allVacancy.datas}
+            columns={columns}
+            pageSize={5}
+            getRowId={() => Math.random()}
+            rowsPerPageOptions={[5]}
+            checkboxSelection
+          />
+        ) : (
+          ""
+        )}
       </div>{" "}
     </>
   );

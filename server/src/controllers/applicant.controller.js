@@ -10,8 +10,8 @@ class ApplicantController {
         status,
         coverLetter,
         jobID,
-        age, 
-        degree
+        age,
+        degree,
       }).save();
       if (result) {
         return res.status(200).send({ result });
@@ -29,9 +29,9 @@ class ApplicantController {
         applicantName,
         coverLetter,
         jobID,
-        age, 
+        age,
         degree,
-        fileURL
+        fileURL,
       }).save();
       if (result) {
         return res.status(200).send({ result });
@@ -59,7 +59,9 @@ class ApplicantController {
   static async applicantById(req, res) {
     try {
       const applicationId = req.params.id;
-      const datas = await ApplicantModel.find({ jobID: applicationId }).sort( { applicantName: 1 } ).limit( 10 );
+      const datas = await ApplicantModel.find({ jobID: applicationId })
+        .sort({ applicantName: 1 })
+        .limit(10);
       if (datas) {
         return res.status(200).send({ datas });
       }
@@ -72,10 +74,16 @@ class ApplicantController {
 
   static async updateStatus(req, res) {
     try {
-      const applicationId = req.params.id;
-      const datas = await ApplicantModel.find({ _id: applicationId });
-      if (datas) {
-        return res.status(200).send({ datas });
+      const _id = req.params.id;
+      const status = req.body.status;
+      const ApplicantData = await ApplicantModel.find({ _id });
+      if (ApplicantData) {
+        const resl = await ApplicantModel.findOneAndUpdate(
+          { _id },
+          { $set: { status } },
+          { useFindAndModify: false }
+        );
+        return res.status(200).send({ resl });
       }
 
       return res.status(400).send({ error: "" });
