@@ -7,7 +7,7 @@ import database from "./database/db"
 
 
 const isDev = process.env.NODE_ENV !== 'production';
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5050;
 
 
 const app = express();
