@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { uploadCvAction } from "../redux/actions";
+import { getVacancies } from "../redux/actions";
 import Vacancies from "../controllers/Vacancies";
 import ApplicantTable from "../controllers/ApplicantTable";
 
@@ -8,7 +8,7 @@ import ApplicantTable from "../controllers/ApplicantTable";
 
 function Dashboard(props) {
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    props.getVacancies();
   }, [0]);
   return (
     <div style={{ marginLeft: "50px", marginRight: "50px"}}>
@@ -24,7 +24,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    uploadCvAction: (data) => dispatch(uploadCvAction(data)),
+    getVacancies: () => dispatch(getVacancies()),
   };
 };
 
