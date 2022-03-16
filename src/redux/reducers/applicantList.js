@@ -1,10 +1,16 @@
 export const initialState = {
-    data: null,
+  data: null,
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case "SAVED_DATA":
+    case "APPLICANTS":
+      return {
+        ...state,
+        data: action.payload,
+      };
+
+    case "APPLICANTS_ERROR":
       return {
         ...state,
         data: action.payload,
