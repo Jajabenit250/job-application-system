@@ -8,7 +8,7 @@ export const uploadCvAction = (data) => async (dispatch) => {
       },
     };
     const res = await axios.post(
-      `http://localhost:5000/api/applicant/apply`,
+      `https://job-appl.herokuapp.com/api/applicant/apply`,
       data,
       config
     );
@@ -28,7 +28,7 @@ export const uploadCvAction = (data) => async (dispatch) => {
 
 export const getVacancies = () => async (dispatch) => {
   try {
-    const res = await axios.get(`http://localhost:5000/api/job/all`);
+    const res = await axios.get(`https://job-appl.herokuapp.com/api/job/all`);
     console.log(res.data);
 
     dispatch({ type: "VACANCIES", payload: res.data });
